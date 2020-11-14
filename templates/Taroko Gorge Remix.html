@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!--
+
+      REMIX by Seokho Lim 2020 Nov 8
+
+      Originally by Nick Montfort
+       
+      -->
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        z-index: -10;
+        background-color: black;
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+        justify-content: space-around;
+        align-items: center;
+        color: #fff;
+        background-color: black;
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+      }
+
+      .container_content {
+       width: 80%;
+       margin-left: 200px;
+      }
+
+      .container_outer_img {
+        margin: 50px;
+        width: 100%;
+        overflow: hidden;
+      }   
+    
+      .container_img {
+        max-width: 100%;
+      }
+
+      .par {
+        height: auto;
+        overflow: hidden;
+      }
+
+      p {
+        line-height: 28px;
+
+      }
+
+      .title {
+        overflow: hidden;
+        height: auto;
+        font-size: 20pt;
+      }
+
+
+
+
+
+
+
+
+
+      /*html, body { height:100%; margin:0; padding:0 }*/
+/*      div { position:fixed; width:100%; height:100%;}
+      #NW { 
+        top:0;   left:0;   background:#F8F8FF; 
+        color: red; }*/
+/*      #NE { top:0;   left:20%; background:blue    }*/
+  /*    #SW { top:15%; left:8;   background:#F8F8FF; }
+      #SE { top:0; left:30%; background:white     }    
+
+      body {
+       background: #F8F8FF;
+       color: #2F4F4F;
+       margin: 0px 0px 0px 120px;
+       font-family: Optima, sans-serif; 
+       font-size: 17pt;
+      }*/
+
+/*    /*  #left {
+        background: brown;
+        width: 400px;
+      }
+      #right {
+        background: #74992e;
+        margin-left: 400px;
+      }*/
+
+/*      img {
+        max-height:100%;
+
+      }*/
+    /*  .column {
+        float: left;
+      }
+
+      .left {
+        width: 25%;
+        background: brown;
+      }
+
+      .right {
+        width: 75%;
+      }*/
+
+    </style>
+
+    <script type="text/javascript">
+
+
+
+
+
+
+
+
+
+      var t=0;
+      var n=0;
+      var paths=0;
+
+      var interval_speed = 2200;
+      var typing_speed = 40;
+
+
+      var above='brow,mist,shape,layer,the crag,stone,forest,height'.split(',');
+      var below='flow,basin,shape,vein,rippling,stone,cove,rock'.split(',');
+
+      var trans='command,pace,roam,trail,frame,sweep,exercise,range'.split(',');
+      var intrans='linger,dwell,rest,relax,hold,dream,hum'.split(',');
+
+      var imper='track,shade,translate,stamp,progress through,direct,run,enter'.split(',');
+      var texture='rough,fine'.split(',');
+      var s='s,'.split(',');
+
+      function rand_range(max) {
+
+       return Math.floor(Math.random() * Math.floor(max));
+      }
+
+      function choose(array) {
+
+       return array[rand_range(array.length-1)];
+      }
+
+      function path() {
+        var p = rand_range(1);
+        var words = choose(above);
+        if ((words == 'forest') && (rand_range(3) == 1)) {
+          words = 'monkeys '+choose(trans);
+        } else {
+          words += s[p] + ' ' + choose(trans) + s[(p + 1) % 2];
+        }
+        words += ' the ' + choose(below) + choose(s) + '.';
+
+        return words;
+      }
+
+      function site() {
+        var words = '';
+        if (rand_range(2) == 1) {
+          words += choose(above);
+        } else {
+          words += choose(below);
+        }
+        words += 's ' + choose(intrans) + '.';
+        return words;
+      }
+
+      function cave() {
+        var adjs = ('sinuous,straight,objective,arched,cool,clear,dim,driven').split(',');
+        adjs.push(choose(texture));
+
+        var target = 1 + rand_range(1);
+        while (adjs.length > target) {
+          adjs.splice(rand_range(adjs.length), 1);
+        }
+        var words = '\u00a0\u00a0' + choose(imper) + ' the ' + adjs.join(' ') + ' \u2014';
+        
+        return words;
+      }
+
+      function typeWriter(speed) {
+        if (typing_speed == 200) {
+          words += "ohhh";
+        }
+        if (i < text.length) {
+          document.getElementById("here").innerHTML += text.charAt(i);
+          i++;
+
+          setTimeout(typeWriter, typing_speed);
+        } else {
+          i = 0
+          document.getElementById("here").innerHTML += "<br>"
+        }
+
+      }
+
+      function do_line() {
+
+
+       if (t<=20) {
+         t+=1;
+
+         if (n===0) {
+          text=' ';
+
+         } else if (n==1) {
+          paths=2+rand_range(2);
+          text=path();
+         } else if (n<paths) {
+          text=site();
+         } else if (n==paths) {
+          text=path();
+         } else if (n==paths+1) {
+          text=' ';
+          typing_speed = 200;
+
+         } else if (n==paths+2) {
+
+          text=cave();
+
+
+         } else {
+          text=' ';
+          n=0;
+         }
+         n+=1;
+
+         i = 0
+
+         // if (0 == 0) {
+         //  typing_speed = 80;
+         // }
+
+
+         setTimeout(typeWriter, typing_speed);
+         // var br = document.createElement("br");
+         // last=document.createElement('div');
+         // last.appendChild(document.createTextNode(text));
+         // left.appendChild(last);
+         // left.appendChild(br)
+         typing_speed = 40;
+
+        }
+      }
+
+      function poem() {
+        setInterval(do_line, interval_speed);
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+    
+    <title>Taroko Gorge Remix</title>
+
+
+  </head>
+
+  <body onload="poem()">
+
+
+    <div class="container">
+      <div class="container_content">
+        <div class="title">
+          a poem.
+        </div>
+
+        <div class="par" id="here">
+
+        </div>
+      </div>
+
+      <div class="container_outer_img">
+        <div class="img-inner">
+          <img src="image2.jpeg" class="container_img">
+        </div>
+      </div>
+    </div>
+
+
+
+
+<!-- 
+    <div id="NW">
+      mewo
+    </div>
+    <div id="SW"></div>
+    <div id="SE">
+      <img src="image2.jpeg">
+    </div> -->
+
+    <div class="overlay"></div>
+  </body>
+</html>

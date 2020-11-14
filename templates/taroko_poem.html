@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!--
+
+      REMIX by Seokho Lim 2020 Nov 13
+
+      Originally by Nick Montfort
+       
+      -->
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        z-index: -10;
+        background-color: black;
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+        justify-content: space-around;
+        align-items: center;
+        color: #fff;
+        background-color: black;
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+      }
+
+      .container_content {
+       width: 80%;
+       margin-left: 200px;
+      }
+
+      .container_outer_img {
+        margin: 80px;
+        width: 100%;
+        overflow: hidden;
+      }   
+    
+      .container_img {
+        max-width: 100%;
+      }
+
+      .par {
+        height: auto;
+        overflow: hidden;
+      }
+
+      p {
+        line-height: 28px;
+
+      }
+
+      .title {
+        overflow: hidden;
+        height: auto;
+        font-size: 20pt;
+      }
+    </style>
+    <script type="text/javascript">
+
+      var t=0;
+      var n=0;
+      var paths=0;
+
+      var interval_speed = 2000;
+      var typing_speed = 40;
+
+      var Above = {{ above | tojson }}.slice(0, 8);
+      var Below = {{ below | tojson }}.slice(0, 8);
+      var Trans = {{ trans | tojson }}.slice(0, 8);
+      var Intrans = {{ intrans | tojson }}.slice(0, 8);
+      var Imper = {{ imper | tojson }}.slice(0, 8);
+      var Texture = {{ texture | tojson }}.slice(0, 4);
+      var Adjs = {{ adjs | tojson }}.slice(0, 8);
+      var s='s,'.split(',');
+
+      function rand_range(max) {
+
+       return Math.floor(Math.random() * Math.floor(max));
+      }
+
+      function choose(array) {
+
+       return array[rand_range(array.length-1)];
+      }
+
+      function path() {
+
+        var p = rand_range(1);
+        var words = choose(Above);
+        if ((words == 'forest') && (rand_range(3) == 1)) {
+          words = 'monkeys '+choose(Trans);
+        } else {
+          words += s[p] + ' ' + choose(Trans) + s[(p + 1) % 2];
+        }
+        words += ' the ' + choose(Below) + choose(s) + '.';
+
+        return words;
+      }
+
+      function site() {
+
+        var words = '';
+        if (rand_range(2) == 1) {
+          words += choose(Above);
+        } else {
+          words += choose(Below);
+        }
+        words += 's ' + choose(Intrans) + '.';
+
+        return words;
+      }
+
+      function cave() {
+
+        var Combined = Adjs.concat(Texture);
+        var target = 1 + rand_range(1);
+        while (Combined.length > target) {
+          Combined.splice(rand_range(Combined.length), 1);
+        }
+        var words = '\u00a0\u00a0' + choose(Imper) + ' the ' + Combined.join(' ') + ' \u2014';
+        
+        return words;
+      }
+
+      function typeWriter(speed) {
+
+        if (i < text.length) {
+          document.getElementById("here").innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typeWriter, typing_speed);
+        } else {
+          i = 0
+          document.getElementById("here").innerHTML += "<br>"
+        }
+      }
+
+      function do_line() {
+
+       if (t<=20) {
+         t+=1;
+         if (n===0) {
+          text=' ';
+         } else if (n==1) {
+          paths=2+rand_range(2);
+          text=path();
+         } else if (n<paths) {
+          text=site();
+         } else if (n==paths) {
+          text=path();
+         } else if (n==paths+1) {
+          text=' ';
+         } else if (n==paths+2) {
+          text=cave();
+         } else {
+          text=' ';
+          n= 0;
+         }
+         n += 1;
+         i = 0
+
+         setTimeout(typeWriter, typing_speed);
+        }
+      }
+
+      function poem() {
+        setInterval(do_line, interval_speed);
+      }
+
+    </script>
+    <title>Taroko Gorge Remix</title>
+  </head>
+  <body onload="poem()">
+    <div class="container">
+      <div class="container_content">
+        <div class="title">
+          a poem.
+        </div>
+        <div class="par" id="here">
+        </div>
+      </div>
+      <div class="container_outer_img">
+        <div class="img-inner">
+          <img src="https://images.squarespace-cdn.com/content/v1/59c3952080bd5ef0d3d76618/1553854615721-MVU3X0ZB4GJRQM61HOE2/ke17ZwdGBToddI8pDm48kCaqn9BhXNX7xuwZwlyHxQkUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2dodvxQHhoe63cpr47uupthmVK1C-Hey1x2cyApzt-d-eZtJ3qR9G2BYeA0wOAaeYNg/Helmig-Consulting_Doreen-Helmig_Referenzen-Header.jpg?format=1500w" class="container_img">
+        </div>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  </body>
+</html>

@@ -13,7 +13,7 @@ It's simple. In the folder directory, run:
 ```bash
 python app.py
 ```
-And open on a web browser localhost:5000
+And go to localhost:5000
 
 ## Input Page - where you enter a keyword
 ![Input Page](https://github.com/seokholim/Taroko_remix/blob/main/images/input_page.png)

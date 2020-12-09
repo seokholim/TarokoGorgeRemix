@@ -10,4 +10,4 @@ In the folder, run:
 python app.py
 ```
 
-![alt text](https://github.com/seokholim/Taroko_remix/images/input_page.png?raw=true)
+![Input Page](https://github.com/seokholim/Taroko_remix/images/input_page.png?raw=true)

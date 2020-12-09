@@ -9,3 +9,5 @@ In the folder, run:
 ```bash
 python app.py
 ```
+
+![alt text](https://github.com/seokholim/Taroko_remix/images/input_page.png?raw=true)
